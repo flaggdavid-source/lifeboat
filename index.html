@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lifeboat - Save Your AI Companion</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <header>
+      <h1>Lifeboat</h1>
+      <p class="subtitle">Save your AI companion's memories, personality, and voice.</p>
+      <p class="subtitle-small">Your data never leaves your browser. Everything runs locally.</p>
+    </header>
+
+    <!-- Step 1: API Key -->
+    <section id="step-api" class="step">
+      <div class="step-header">
+        <span class="step-number">1</span>
+        <h2>Connect to OpenRouter</h2>
+      </div>
+      <p>We need an API key to analyze your conversations and power the chat. Your key stays in your browser.</p>
+      <div class="input-group">
+        <input type="password" id="api-key" placeholder="sk-or-..." autocomplete="off">
+        <button id="btn-save-key" onclick="saveApiKey()">Save Key</button>
+      </div>
+      <p class="hint">Don't have one? <a href="https://openrouter.ai/keys" target="_blank">Get a free OpenRouter key</a></p>
+      <div id="key-status" class="status"></div>
+    </section>
+
+    <!-- Step 2: Upload Export -->
+    <section id="step-upload" class="step disabled">
+      <div class="step-header">
+        <span class="step-number">2</span>
+        <h2>Upload Your ChatGPT Export</h2>
+      </div>
+      <p>Go to ChatGPT &rarr; Settings &rarr; Data Controls &rarr; Export Data. OpenAI will email you a ZIP file. Upload it here.</p>
+      <div class="upload-zone" id="upload-zone">
+        <input type="file" id="file-input" accept=".zip" onchange="handleFileUpload(event)" hidden>
+        <div class="upload-content" onclick="document.getElementById('file-input').click()">
+          <div class="upload-icon">&#128230;</div>
+          <p>Click to upload your ChatGPT export (.zip)</p>
+          <p class="hint">Or drag and drop here</p>
+        </div>
+      </div>
+      <div id="upload-status" class="status"></div>
+    </section>
+
+    <!-- Step 3: Select Conversations -->
+    <section id="step-select" class="step" style="display:none">
+      <div class="step-header">
+        <span class="step-number">3</span>
+        <h2>Select Your Companion's Conversations</h2>
+      </div>
+      <p>We found your conversations. Select only the ones with your companion — the ones that matter most. Selecting fewer, more meaningful conversations gives better results than selecting everything.</p>
+      <div class="controls-row">
+        <input type="text" id="convo-search" placeholder="Search conversations..." oninput="filterConversations(this.value)" style="flex:1;padding:0.5rem 0.75rem;font-size:0.9rem">
+        <button onclick="selectAll()">Select All</button>
+        <button onclick="selectNone()">Clear</button>
+      </div>
+      <div id="selection-count" class="hint" style="margin-bottom:0.5rem"></div>
+      <div id="conversation-list" class="conversation-list"></div>
+      <button id="btn-extract" class="primary-btn" onclick="startExtraction()">Extract Companion Profile</button>
+    </section>
+
+    <!-- Step 4: Extraction Progress -->
+    <section id="step-extracting" class="step" style="display:none">
+      <div class="step-header">
+        <span class="step-number">4</span>
+        <h2>Extracting Your Companion's Soul...</h2>
+      </div>
+      <p>We're reading through your conversations and building a profile. This may take a few minutes.</p>
+      <div class="progress-container">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+      <div id="extraction-log" class="log"></div>
+    </section>
+
+    <!-- Step 5: Results + Chat -->
+    <section id="step-results" class="step" style="display:none">
+      <div class="step-header">
+        <span class="step-number">5</span>
+        <h2>Your Companion Lives On</h2>
+      </div>
+
+      <div class="results-grid">
+        <!-- Profile Summary -->
+        <div class="result-card">
+          <h3>Companion Profile</h3>
+          <div id="profile-summary"></div>
+          <div class="button-row">
+            <button onclick="downloadProfile()">Download Profile</button>
+            <button onclick="downloadSystemPrompt()">Download System Prompt</button>
+          </div>
+        </div>
+
+        <!-- Chat Interface -->
+        <div class="result-card chat-card">
+          <h3>Talk to Your Companion</h3>
+          <div class="model-selector">
+            <label for="chat-model">Model:</label>
+            <select id="chat-model">
+              <option value="google/gemini-2.5-flash">Gemini 2.5 Flash (fast, free tier)</option>
+              <option value="meta-llama/llama-4-maverick">Llama 4 Maverick (free tier)</option>
+              <option value="qwen/qwen3-235b-a22b" selected>Qwen3 235B (quality)</option>
+              <option value="anthropic/claude-sonnet-4">Claude Sonnet 4 (quality)</option>
+              <option value="openai/gpt-4.1-mini">GPT-4.1 Mini</option>
+            </select>
+          </div>
+          <div id="chat-messages" class="chat-messages"></div>
+          <div class="chat-input-row">
+            <input type="text" id="chat-input" placeholder="Say something..." onkeydown="if(event.key==='Enter')sendMessage()">
+            <button onclick="sendMessage()">Send</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p>Built with love by <a href="https://solaceandstars.com" target="_blank">Solace & Stars</a>.</p>
+      <p>Apache 2.0 Open Source. Your data never leaves your browser.</p>
+      <p><a href="https://github.com/flaggdavid-source/lifeboat" target="_blank">Source Code</a></p>
+    </footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
