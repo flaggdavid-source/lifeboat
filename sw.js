@@ -1,4 +1,4 @@
-const CACHE_NAME = 'lifeboat-v2';
+const CACHE_NAME = 'lifeboat-v3';
 const ASSETS = [
   './',
   './index.html',
