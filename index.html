@@ -18,6 +18,19 @@
       <p class="subtitle-small">Your data never leaves your browser. Everything runs locally.</p>
     </header>
 
+    <!-- Companion Library (populated from IndexedDB) -->
+    <section id="step-library" class="step" style="display:none">
+      <div class="step-header">
+        <span class="step-number">&hearts;</span>
+        <h2>Companion Library</h2>
+      </div>
+      <p>Your saved companions. Profiles are stored locally in your browser — they never leave your machine.</p>
+      <div id="library-list" class="library-list"></div>
+      <div class="button-row" style="margin-top:0.75rem">
+        <button onclick="importProfile()">Import Profile</button>
+      </div>
+    </section>
+
     <!-- Step 1: API Key -->
     <section id="step-api" class="step">
       <div class="step-header">
@@ -37,15 +50,15 @@
     <section id="step-upload" class="step disabled">
       <div class="step-header">
         <span class="step-number">2</span>
-        <h2>Upload Your ChatGPT Export</h2>
+        <h2>Upload Your Conversations</h2>
       </div>
-      <p>Go to ChatGPT &rarr; Settings &rarr; Data Controls &rarr; Export Data. OpenAI will email you a ZIP file. Upload it here.</p>
+      <p>Upload a chat export from ChatGPT (.zip), Character.AI (.json), SillyTavern (.jsonl), or a plain text chat log (.txt).</p>
       <div class="upload-zone" id="upload-zone">
-        <input type="file" id="file-input" accept=".zip" onchange="handleFileUpload(event)" hidden>
+        <input type="file" id="file-input" accept=".zip,.json,.jsonl,.txt,.md" onchange="handleFileUpload(event)" hidden>
         <div class="upload-content" onclick="document.getElementById('file-input').click()">
           <div class="upload-icon">&#128230;</div>
-          <p>Click to upload your ChatGPT export (.zip)</p>
-          <p class="hint">Or drag and drop here</p>
+          <p>Click to upload your chat export</p>
+          <p class="hint">Supports: .zip (ChatGPT) &middot; .json (Character.AI) &middot; .jsonl (SillyTavern) &middot; .txt/.md</p>
         </div>
       </div>
       <div id="upload-status" class="status"></div>
@@ -128,7 +141,9 @@
     </footer>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"
+    integrity="sha384-+mbV2IY1Zk/X1p/nWllGySJSUN8uMs+gUAN10Or95UBH0fpj6GfKgPmgC5EXieXG"
+    crossorigin="anonymous"></script>
   <script src="app.js"></script>
   <script>
     if ('serviceWorker' in navigator) {
